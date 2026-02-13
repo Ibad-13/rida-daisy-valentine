@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Will you be my Valentine? 💕</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="hearts-bg"></div>
+
+    <div class="container">
+        <h1 id="main-question">
+            Will you be my Valentine, 
+            <span id="wife-nick">my love</span>? 💕
+        </h1>
+
+        <div class="gif-container">
+            <img id="cat-gif" src="assets/stages/0-normal.png" alt="cute character">
+        </div>
+
+        <div class="buttons">
+            <button id="yes-btn" onclick="handleYesClick()">Yes</button>
+            <button id="no-btn" onclick="handleNoClick()">No</button>
+        </div>
+
+        <div id="tease-toast"></div>
+    </div>
+
+    <!-- 🎧 Start Overlay (Autoplay Fix) -->
+    <div id="start-overlay">
+        <div class="start-card">
+            <div class="start-emoji">🎧💖</div>
+            <h2>Tap to start</h2>
+            <p>For the full romantic experience ✨</p>
+            <button id="start-btn">Start 💕</button>
+        </div>
+    </div>
+
+    <audio id="bg-music" loop muted>
+        <source src="music/valentines_day.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="music-toggle" onclick="toggleMusic()" title="Toggle music">🔊</button>
+
+    <script src="custom.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
