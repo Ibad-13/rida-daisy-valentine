@@ -128,12 +128,21 @@ function handleNoClick() {
 
   const msgIndex = Math.min(noClickCount, noMessages.length - 1)
   noBtn.textContent = noMessages[msgIndex]
+  // ✅ Grow Yes button (limited on mobile)
+  const isMobile = window.matchMedia("(max-width: 520px)").matches
 
   const currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize)
-  yesBtn.style.fontSize = `${currentSize * 1.35}px`
-  const padY = Math.min(18 + noClickCount * 5, 60)
-  const padX = Math.min(45 + noClickCount * 10, 120)
+  const maxSize = isMobile ? 26 : 70
+  const nextSize = Math.min(currentSize * (isMobile ? 1.12 : 1.35), maxSize)
+  yesBtn.style.fontSize = `${nextSize}px`
+
+  const padY = Math.min(18 + noClickCount * (isMobile ? 2 : 5), isMobile ? 28 : 60)
+  const padX = Math.min(45 + noClickCount * (isMobile ? 4 : 10), isMobile ? 70 : 120)
   yesBtn.style.padding = `${padY}px ${padX}px`
+
+  if (isMobile) {
+    yesBtn.style.width = "min(92vw, 360px)"
+  }
 
   if (noClickCount >= 2) {
     const noSize = parseFloat(window.getComputedStyle(noBtn).fontSize)

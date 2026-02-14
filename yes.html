@@ -1,89 +1,92 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="yes-page-title">Yay! 🎉</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title id="yes-page-title">Yay! 🎉</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="style.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 </head>
-<body>
-  <div class="hearts-bg"></div>
+<body class="yes-page">
+<div class="hearts-bg"></div>
+    <button class="daisy-float" id="daisy-float" aria-label="Tap the daisy">🌼</button>
 
-  <div class="container yes-container">
-    <div class="yes-layout">
-      <!-- LEFT: main -->
-      <main class="yes-main">
-        <h1 class="yes-title" id="yes-title">Happy Valentine’s Day, <span id="wife-name">my love</span> 🌼❤️ 🎉</h1>
-        <p class="yes-message" id="yes-line">Today is all about you, Daisy 🌼💖</p>
-
-        <div class="slideshow" id="slideshow" aria-label="Memories slideshow">
-          <div class="slide-frame">
-            <img id="slide-img" src="assets/photos/1.jpg" alt="memory photo" onerror="this.style.display='none'">
+<div class="container yes-container">
+<div class="yes-layout">
+<!-- LEFT: main -->
+<main class="yes-main">
+<h1 class="yes-title" id="yes-title">Happy Valentine’s Day, <span id="wife-name">my love</span> ❤️ 🎉</h1>
+<p class="yes-message" id="yes-line">Today is all about you, Daisy 🌼💖</p><section class="panel hug-panel">
+<h2>Send me a hug 🤗</h2>
+<p class="hug-sub">Tap as many as you want… I’ll keep collecting them 💗</p>
+<button class="hug-btn" id="hug-btn">Send a hug 🤗</button>
+<button id="hug-reset" type="button" title="Reset hugs">Start Over 🌼</button>
+<div class="hug-stats">
+<span id="hug-count">0</span> hugs sent
           </div>
-          <div class="slide-caption" id="slide-caption">Our little memories 💞</div>
-        </div>
-      </main>
+<div aria-live="polite" class="hug-msg" id="hug-msg"></div>
+</section>
+<div aria-label="Memories slideshow" class="slideshow" id="slideshow">
+<div class="slide-frame">
+<img alt="memory photo" id="slide-img" onerror="this.style.display='none'" src="assets/photos/1.jpg"/>
+</div>
+<div class="slide-caption" id="slide-caption">Our little memories 💞</div>
+</div>
+</main>
+<!-- RIGHT: panels -->
+<aside class="yes-side">
+<section class="panel admire-panel">
+<h2>Things I adore about you 🌼</h2>
+<div class="admire-cards" id="admire-cards"></div>
+<div class="admire-actions">
+<button class="mini-btn" id="admire-more">Show one more ✨</button>
+</div>
+</section>
+<section class="panel letter-panel">
+<h2>A letter for you 💌</h2>
+<button class="letter-btn" id="open-letter">Open your letter 💌</button>
+</section>
+<section class="panel openwhen-panel">
+<h2>Open when… ✉️</h2>
+<div class="openwhen-grid" id="openwhen-grid"></div>
+</section>
 
-      <!-- RIGHT: panels -->
-      <aside class="yes-side">
-        <section class="panel admire-panel">
-          <h2>Things I adore about you 🌼</h2>
-          <div class="admire-cards" id="admire-cards"></div>
-          <div class="admire-actions">
-            <button class="mini-btn" id="admire-more">Show one more ✨</button>
-          </div>
-        </section>
-
-        <section class="panel letter-panel">
-          <h2>A letter for you 💌</h2>
-          <button class="letter-btn" id="open-letter">Open your letter 💌</button>
-        </section>
-
-        <section class="panel openwhen-panel">
-          <h2>Open when… ✉️</h2>
-          <div class="openwhen-grid" id="openwhen-grid"></div>
-        </section>
-
-        <section class="panel qr-panel" id="qr-panel" style="display:none;">
-          <h2>Open on your phone 📱</h2>
-          <div class="qr-wrap">
-            <div id="qr"></div>
-            <div class="qr-hint" id="qr-hint"></div>
-          </div>
-        </section>
-      </aside>
-    </div>
-
-    <!-- Letter Modal -->
-    <div class="letter-modal" id="letter-modal" aria-hidden="true">
-      <div class="letter-card" role="dialog" aria-modal="true">
-        <button class="letter-close" id="close-letter" aria-label="Close">✕</button>
-        <h2 id="letter-title">A little note for you 💌</h2>
-        <div id="letter-body" class="letter-body"></div>
-      </div>
-    </div>
-
-    <!-- Open-When Modal -->
-    <div class="ow-modal" id="ow-modal" aria-hidden="true">
-      <div class="ow-card" role="dialog" aria-modal="true">
-        <button class="ow-close" id="ow-close" aria-label="Close">✕</button>
-        <h2 class="ow-title" id="ow-title">Open when…</h2>
-        <div class="ow-body" id="ow-body"></div>
-      </div>
-    </div>
-  </div>
-
-  <audio id="bg-music" loop>
-    <source src="music/until_i_found_her_ring.mp3" type="audio/mpeg">
-  </audio>
-
-  <button id="music-toggle" onclick="toggleMusic()" title="Toggle music">🔊</button>
-
-  <script src="custom.js"></script>
-  <script src="yes-script.js"></script>
+<section class="panel qr-panel" id="qr-panel" style="display:none;">
+<h2>Open on your phone 📱</h2>
+<div class="qr-wrap">
+<div id="qr"></div>
+<div class="qr-hint" id="qr-hint"></div>
+</div>
+</section>
+</aside>
+</div>
+<!-- Letter Modal -->
+<div aria-hidden="true" class="letter-modal" id="letter-modal">
+<div aria-modal="true" class="letter-card" role="dialog">
+<button aria-label="Close" class="letter-close" id="close-letter">✕</button>
+<h2 id="letter-title">A little note for you 💌</h2>
+<div class="letter-body" id="letter-body"></div>
+</div>
+</div>
+<!-- Open-When Modal -->
+<div aria-hidden="true" class="ow-modal" id="ow-modal">
+<div aria-modal="true" class="ow-card" role="dialog">
+<button aria-label="Close" class="ow-close" id="ow-close">✕</button>
+<h2 class="ow-title" id="ow-title">Open when…</h2>
+<div class="ow-body" id="ow-body"></div>
+</div>
+</div>
+</div>
+<div aria-live="polite" class="egg-toast" id="egg-toast" role="status"></div>
+<audio id="bg-music" loop="">
+<source src="music/until_i_found_her_ring.mp3" type="audio/mpeg"/>
+</audio>
+<button id="music-toggle" onclick="toggleMusic()" title="Toggle music">🔊</button>
+<script src="custom.js"></script>
+<script src="yes-script.js"></script>
 </body>
 </html>

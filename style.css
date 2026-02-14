@@ -678,3 +678,330 @@ h1 {
   .yes-side{ position: static; max-height: none; overflow: visible; padding-right: 0; }
   .panel.admire-panel{ max-height: none; }
 }
+
+/* ✅ Mobile safety: buttons never overflow screen */
+@media (max-width: 520px){
+  .buttons{
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  #yes-btn, #no-btn{
+    width: min(92vw, 360px);
+    max-width: 92vw;
+  }
+
+  /* Prevent giant yes button on mobile */
+  #yes-btn{
+    font-size: 1.35rem;
+    padding: 16px 22px;
+  }
+}
+
+/* =========================================================
+   ✅ Mobile-friendly YES page fixes (scroll + layout)
+   ========================================================= */
+body.yes-page{
+  /* allow scrolling on YES page */
+  align-items: flex-start;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px 0;
+}
+
+body.yes-page .container{
+  width: 100%;
+  padding: 22px 14px;
+}
+
+/* Make sure grid fits nicely */
+body.yes-page .yes-layout{
+  width: min(980px, 96vw);
+  margin: 0 auto;
+}
+
+/* Letter modal should scroll on small screens */
+.letter-card{
+  max-height: 82vh;
+  overflow: auto;
+}
+
+/* Small screens: stack + comfortable spacing */
+@media (max-width: 520px){
+  body.yes-page{
+    padding: 14px 0;
+  }
+
+  .yes-container h1.yes-title{
+    font-size: 2rem;
+    line-height: 1.15;
+  }
+
+  .yes-message{
+    font-size: 1.15rem;
+    margin-top: 14px;
+  }
+
+  /* GIF smaller */
+  .yes-container #cat-gif{
+    width: 210px;
+    height: 210px;
+  }
+
+  /* Slideshow image smaller */
+  #slide-img{
+    height: 200px;
+  }
+
+  /* Right column should NOT be sticky on mobile */
+  .yes-side{
+    position: static;
+    top: auto;
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
+
+  /* Admire panel shouldn't push everything; let it scroll internally */
+  .admire-panel{
+    max-height: none;
+  }
+  .admire-cards{
+    max-height: 220px;
+    overflow: auto;
+    padding-right: 6px;
+  }
+
+  /* Panels full width */
+  .admire-panel, .letter-panel{
+    padding: 14px 12px;
+  }
+}
+
+
+/* =========================
+   Cute Mobile Fun Add-ons
+   ========================= */
+
+/* Daisy easter-egg button */
+.daisy-egg{
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  border: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.82);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+  cursor: pointer;
+  font-size: 1.35rem;
+  display: grid;
+  place-items: center;
+  transition: transform 0.15s ease;
+  z-index: 5;
+}
+.daisy-egg:hover{ transform: scale(1.08); }
+.daisy-egg:active{ transform: scale(0.95); }
+
+/* Toast for daisy tap */
+.egg-toast{
+  position: fixed;
+  left: 50%;
+  bottom: 84px;
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(255,255,255,0.92);
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 900;
+  color: #d63384;
+  box-shadow: 0 18px 46px rgba(0,0,0,0.14);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 999;
+  text-align: center;
+  max-width: min(92vw, 520px);
+}
+.egg-toast.show{
+  opacity: 1;
+  transform: translateX(-50%) translateY(0px);
+}
+
+/* Hug panel */
+.hug-panel .hug-sub{
+  margin-top: 6px;
+  font-weight: 800;
+  color: #444;
+  opacity: 0.92;
+}
+.hug-btn{
+  margin-top: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 14px;
+  font-weight: 900;
+  font-size: 1.05rem;
+  cursor: pointer;
+  background: rgba(255,77,109,0.95);
+  color: #fff;
+  box-shadow: 0 12px 24px rgba(255,77,109,0.20);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.hug-btn:hover{ transform: translateY(-1px); box-shadow: 0 14px 30px rgba(255,77,109,0.24); }
+.hug-btn:active{ transform: translateY(0px) scale(0.99); }
+
+.hug-stats{
+  margin-top: 10px;
+  font-weight: 900;
+  color: #d63384;
+}
+.hug-stats #hug-count{
+  font-size: 1.15rem;
+}
+.hug-msg{
+  margin-top: 8px;
+  font-weight: 900;
+  color: #444;
+  min-height: 1.2rem;
+}
+
+/* Mobile tweaks */
+@media (max-width: 520px){
+  .daisy-egg{ top: 10px; right: 10px; width: 44px; height: 44px; }
+}
+
+
+
+/* ✅ Hug panel looks nice in main area */
+.yes-main .hug-panel{
+  width: min(520px, 92vw);
+  margin: 12px auto 0;
+  text-align: left;
+}
+.yes-main .hug-panel h2{
+  margin-bottom: 6px;
+}
+.yes-main .hug-btn{
+  width: 100%;
+}
+
+
+/* --- Daisy inline badge (no overlap) --- */
+.daisy-badge{
+  display: inline-block;
+  margin-left: 8px;
+  cursor: pointer;
+  user-select: none;
+  transform-origin: center;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+.daisy-badge:hover{
+  transform: scale(1.25) rotate(10deg);
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,0.15));
+}
+
+/* --- Daisy love burst --- */
+.love-burst{
+  position: fixed;
+  left: 50%;
+  top: 22%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 1300;
+  font-size: 22px;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: loveBurst 1.35s ease-out forwards;
+  filter: drop-shadow(0 10px 16px rgba(0,0,0,0.12));
+}
+@keyframes loveBurst{
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
+  10%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.45) rotate(18deg); }
+}
+
+/* --- Daisy toast --- */
+.daisy-toast{
+  position: fixed;
+  left: 50%;
+  bottom: 90px;
+  transform: translateX(-50%);
+  max-width: min(92vw, 520px);
+  text-align: center;
+  background: rgba(255,77,109,0.95);
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-weight: 900;
+  box-shadow: 0 18px 46px rgba(0,0,0,0.18);
+  z-index: 1300;
+  opacity: 0;
+  animation: toastPop 2.9s ease forwards;
+}
+@keyframes toastPop{
+  0% { opacity: 0; transform: translateX(-50%) translateY(10px) scale(0.98); }
+  12% { opacity: 1; transform: translateX(-50%) translateY(0px) scale(1); }
+  85% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(-50%) translateY(6px) scale(0.98); }
+}
+
+.daisy-badge{position: relative; z-index: 20;}
+
+
+/* --- Floating Daisy (top-right) --- */
+.daisy-float{
+  pointer-events: auto;
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  width: 52px;
+  height: 52px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.88);
+  font-size: 1.6rem;
+  cursor: pointer;
+  z-index: 1200;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.14);
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s ease;
+}
+.daisy-float:hover{ transform: scale(1.08) rotate(6deg); }
+.daisy-float:active{ transform: scale(0.98); }
+
+/* Keep YES heading clear of top-right buttons */
+.yes-page .yes-title{
+  padding-right: 76px; /* space for daisy + comfortable wrap */
+}
+
+/* Mobile: slightly smaller daisy */
+@media (max-width: 520px){
+  .daisy-float{
+    width: 46px;
+    height: 46px;
+    font-size: 1.45rem;
+    top: 12px;
+    right: 12px;
+  }
+  .yes-page .yes-title{ padding-right: 68px; }
+}
+
+
+/* --- Hug reset (cute) --- */
+#hug-reset{
+  margin-top: 10px;
+
+  border: none;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 900;
+  cursor: pointer;
+  background: rgba(214,51,132,0.12);
+  color: #d63384;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+#hug-reset:hover{ background: rgba(214,51,132,0.18); }
+#hug-reset:active{ transform: scale(0.98); }

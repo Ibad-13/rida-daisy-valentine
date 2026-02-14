@@ -273,7 +273,12 @@ window.addEventListener('load', () => {
   renderQR();
   launchConfetti();
   startSlideshow();
-  startPetals();
+  startPetals()
+    initDaisyFloat()
+    initHugs()
+;
+  initDaisyEgg();
+;
   startMusicWithFade();
 });
 
@@ -362,6 +367,137 @@ function launchConfetti() {
   }, 420);
 }
 
+
+
+/* --- Daisy Easter Egg (tap 🌼) --- */
+function showEggToast(message){
+  const toast = document.getElementById('egg-toast');
+  if (!toast) return;
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => toast.classList.remove('show'), 2400);
+}
+
+function confettiBurstOnce(){
+  if (typeof confetti === 'function') {
+    confetti({
+      particleCount: 110,
+      spread: 90,
+      origin: { x: 0.5, y: 0.35 }
+    });
+    return;
+  }
+  // fallback (if CDN blocked): quick burst using existing confetti pieces
+  for (let i=0;i<18;i++){
+    const d = document.createElement('div');
+    d.className = 'confetti-piece';
+    d.style.left = (Math.random()*100) + 'vw';
+    d.style.setProperty('--x', '0px');
+    d.style.setProperty('--x2', ((Math.random()*220)-110) + 'px');
+    d.style.animationDuration = (2.4 + Math.random()*1.4) + 's';
+    document.body.appendChild(d);
+    setTimeout(()=>d.remove(), 4200);
+  }
+}
+
+function initDaisyEgg(){
+  const btn = document.getElementById('daisy-egg');
+  if (!btn) return;
+
+  // mobile-friendly: ensure it's clickable above everything
+  btn.style.pointerEvents = 'auto';
+
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    confettiBurstOnce();
+    const cfg = getVDAYConfig();
+    const nick = cfg.wifeNick || cfg.wifeName || "my love";
+    showEggToast(`Daisy moment 🌼 — you’re magic, ${nick} 💖`);
+  });
+}
+
+/* --- Hug counter --- */
+function initHugs(){
+  const btn = document.getElementById("hug-btn");
+  const countEl = document.getElementById("hug-count");
+  const msgEl = document.getElementById("hug-msg");
+  if(!btn || !countEl) return;
+
+  const KEY = "vday_hugs_count";
+  let count = Number(localStorage.getItem(KEY) || "0");
+  if (!Number.isFinite(count)) count = 0;
+  countEl.textContent = String(count);
+
+  const resetBtn = document.getElementById("hug-reset");
+  if (resetBtn){
+    resetBtn.addEventListener("click", () => {
+      localStorage.removeItem(KEY);
+      count = 0;
+      countEl.textContent = "0";
+      if (msgEl) msgEl.textContent = "Fresh start 🌼 Now send a hug 🤗";
+      if (typeof showDaisyToast === "function") showDaisyToast("Reset done 🌼");
+    });
+  }
+
+
+  const milestoneMessages = {
+    50:  "50 hugs?! 🥹 You’re the sweetest, Daisy 💕",
+    100: "100 hugs unlocked! 🥰 BIG LOVE for you 🌼💖",
+    150: "150 hugs… okay I’m officially melting 🫠💘",
+    200: "200 hugs! You’re my favorite notification 😭💕",
+    250: "250 hugs! You deserve a crown, Daisy 👑🌼",
+    300: "300 hugs!! At this point you’re unstoppable 💖✨"
+  };
+
+  const clickNotes = [
+    "Sent 🤍",
+    "One more for you 🌼",
+    "A warm hug, just because 💕",
+    "For my Daisy 💖",
+    "You deserve all the love ✨"
+  ];
+
+  function celebrate(text){
+    if (msgEl) msgEl.textContent = text;
+
+    if (typeof window.confetti === "function"){
+      window.confetti({ particleCount: 140, spread: 110, origin: { x: 0.5, y: 0.35 } });
+      setTimeout(()=>window.confetti({ particleCount: 80, spread: 90, origin: { x: 0.2, y: 0.45 } }), 140);
+      setTimeout(()=>window.confetti({ particleCount: 80, spread: 90, origin: { x: 0.8, y: 0.45 } }), 140);
+    }
+    if (typeof loveBurst === "function") loveBurst();
+    if (typeof showDaisyToast === "function") showDaisyToast(text);
+  }
+
+  btn.addEventListener("click", () => {
+    count += 1;
+    countEl.textContent = String(count);
+
+  const resetBtn = document.getElementById("hug-reset");
+  if (resetBtn){
+    resetBtn.addEventListener("click", () => {
+      localStorage.removeItem(KEY);
+      count = 0;
+      countEl.textContent = "0";
+      if (msgEl) msgEl.textContent = "Fresh start 🌼 Now send a hug 🤗";
+      if (typeof showDaisyToast === "function") showDaisyToast("Reset done 🌼");
+    });
+  }
+
+    localStorage.setItem(KEY, String(count));
+
+    if (msgEl) msgEl.textContent = clickNotes[Math.floor(Math.random()*clickNotes.length)];
+
+    // milestones every 50 (50,100,150,...)
+    if (count % 50 === 0){
+      const text = milestoneMessages[count] || `${count} hugs! 🫶 You’re so loved, Daisy 🌼`;
+      celebrate(text);
+    }
+  });
+}
+
 /* --- Toggle music --- */
 function toggleMusic() {
   const music = document.getElementById('bg-music');
@@ -379,4 +515,72 @@ function toggleMusic() {
       if (mt) mt.textContent = '🔊';
     }).catch(() => {});
   }
+}
+
+const daisyMessages = [
+  "You make the world softer just by being you 💕",
+  "Daisy, you are magic in human form ✨",
+  "I adore your light, always 🌼",
+  "You are your own beautiful universe 💖",
+  "You’re my favorite kind of beautiful — the real kind 🤍"
+];
+
+function showDaisyToast(text){
+  const t = document.createElement("div");
+  t.className = "daisy-toast";
+  t.textContent = text;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(), 3100);
+}
+
+function loveBurst(origin){
+  const hearts = ["💖","💕","💗","💝","🌼"];
+  for(let i=0;i<18;i++){
+    const h = document.createElement("div");
+    h.className = "love-burst";
+    h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+    const dx = (Math.random()*380)-190;
+    const dy = (Math.random()*260)-140;
+    h.style.setProperty("--dx", dx + "px");
+    h.style.setProperty("--dy", dy + "px");
+    h.style.fontSize = (18 + Math.random()*18) + "px";
+    // optional: shift origin a bit
+    if (origin){
+      h.style.left = origin.x;
+      h.style.top = origin.y;
+    }
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(), 1500);
+  }
+}
+
+let _daisyCooldown = false;
+function initDaisyFloat(){
+  const btn = document.getElementById("daisy-float");
+  if(!btn) return;
+
+  let lastFire = 0;
+
+  const fireOnce = () => {
+    const now = Date.now();
+    // Guard against duplicate events (pointerdown + click)
+    if (now - lastFire < 600) return;
+    lastFire = now;
+
+    if (typeof window.confetti === "function"){
+      window.confetti({ particleCount: 90, spread: 90, origin: { x: 0.92, y: 0.14 } });
+    }
+    if (typeof loveBurst === "function"){
+      loveBurst({ x: "92%", y: "16%" });
+    }
+    const msg = (Array.isArray(daisyMessages) && daisyMessages.length)
+      ? daisyMessages[Math.floor(Math.random()*daisyMessages.length)]
+      : "You are so loved 🌼💖";
+    if (typeof showDaisyToast === "function") showDaisyToast(msg);
+  };
+
+  // Use only one primary event + guard
+  btn.addEventListener("pointerup", (e) => { e.preventDefault(); fireOnce(); }, { passive: false });
+  // Fallback for browsers without pointer events
+  btn.addEventListener("click", (e) => { e.preventDefault(); fireOnce(); });
 }
